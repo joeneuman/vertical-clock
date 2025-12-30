@@ -49,11 +49,15 @@ body {
     font-size: 16px;
     font-weight: normal;
     text-align: left;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid #ffffff;
     display: flex;
     align-items: flex-start;
     min-height: calc(100vh / 3 / 4);
     height: auto;
+}
+
+.time-marker-hour {
+    border-top: 2px solid #ffffff;
 }
 
 .time-marker .time-text {
@@ -70,10 +74,22 @@ body {
 .header {
     position: fixed;
     top: 0;
+    left: 0;
     right: 0;
     padding: 20px;
     z-index: 200;
     pointer-events: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.time-display {
+    color: #ff0000;
+    font-size: 20px;
+    font-weight: normal;
+    text-align: center;
+    flex: 1;
 }
 
 .date-display {

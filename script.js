@@ -14,9 +14,11 @@ class VerticalClock {
         this.redLineTimeRatio = this.redLinePosition / this.viewportHeight;
         this.redLineElement = document.querySelector('.red-line');
         this.dateDisplayElement = document.getElementById('dateDisplay');
+        this.timeDisplayElement = document.getElementById('timeDisplay');
         
         this.init();
         this.updateDateDisplay();
+        this.updateTimeDisplay();
         this.startAnimation();
         
         // Handle window resize
@@ -42,6 +44,12 @@ class VerticalClock {
         if (!this.dateDisplayElement) return;
         const now = new Date();
         this.dateDisplayElement.textContent = this.formatDate(now);
+    }
+    
+    updateTimeDisplay() {
+        if (!this.timeDisplayElement) return;
+        const now = new Date();
+        this.timeDisplayElement.textContent = this.formatTime(now);
     }
     
     updateRedLinePosition() {
@@ -122,7 +130,9 @@ class VerticalClock {
     
     createMarker(date, position) {
         const marker = document.createElement('div');
-        marker.className = 'time-marker';
+        // Check if this is an hour marker (minutes === 0)
+        const isHourMarker = date.getMinutes() === 0;
+        marker.className = isHourMarker ? 'time-marker time-marker-hour' : 'time-marker';
         marker.style.top = `${position}px`;
         
         const timeText = document.createElement('span');
@@ -248,6 +258,9 @@ class VerticalClock {
             this.updateDateDisplay();
             this.lastDateUpdate = now;
         }
+        
+        // Update time display every second
+        this.updateTimeDisplay();
     }
     
     startAnimation() {

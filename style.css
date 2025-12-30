@@ -60,9 +60,26 @@ body {
     flex: 1;
 }
 
-.time-marker .date-text {
-    font-size: 12px;
-    color: #888;
-    margin-left: 10px;
+.time-marker-5min {
+    position: absolute;
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: calc(100vh / 3 / 12);
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 20px;
+    z-index: 200;
+    pointer-events: none;
+}
+
+.date-display {
+    color: #fff;
+    font-size: 18px;
+    font-weight: normal;
+    text-align: right;
 }
 

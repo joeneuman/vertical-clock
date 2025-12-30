@@ -52,6 +52,7 @@ body {
     border-top: 1px solid #ffffff;
     display: flex;
     align-items: flex-start;
+    gap: 10px;
     min-height: calc(100vh / 3 / 4);
     height: auto;
 }
@@ -61,7 +62,54 @@ body {
 }
 
 .time-marker .time-text {
+    min-width: 80px;
+}
+
+.notes-container {
     flex: 1;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.marker-text-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-size: 14px;
+    padding: 2px 5px;
+    outline: none;
+}
+
+.marker-text-input:focus {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.marker-text-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.transfer-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-size: 16px;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 3px;
+    outline: none;
+    flex-shrink: 0;
+    transition: background 0.2s;
+}
+
+.transfer-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.transfer-button:active {
+    background: rgba(255, 255, 255, 0.4);
 }
 
 .time-marker-5min {

@@ -135,13 +135,91 @@ class VerticalClock {
         marker.className = isHourMarker ? 'time-marker time-marker-hour' : 'time-marker';
         marker.style.top = `${position}px`;
         
+        // Create a unique key for this time slot (YYYY-MM-DD-HH-MM format)
+        const timeKey = this.getTimeKey(date);
+        marker.dataset.timeKey = timeKey;
+        
         const timeText = document.createElement('span');
         timeText.className = 'time-text';
         timeText.textContent = this.formatTime(date);
         
+        // Add text input areas - split in half
+        const notesContainer = document.createElement('div');
+        notesContainer.className = 'notes-container';
+        
+        // Left note: "Going to Do"
+        const textInputLeft = document.createElement('input');
+        textInputLeft.type = 'text';
+        textInputLeft.className = 'marker-text-input marker-text-left';
+        textInputLeft.placeholder = 'Going to Do';
+        textInputLeft.value = this.getSavedText(timeKey, 'going-to-do');
+        
+        textInputLeft.addEventListener('input', (e) => {
+            this.saveText(timeKey, e.target.value, 'going-to-do');
+        });
+        
+        // Transfer button
+        const transferButton = document.createElement('button');
+        transferButton.className = 'transfer-button';
+        transferButton.textContent = '→';
+        transferButton.title = 'Move to What I Did';
+        transferButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const goingToDoText = textInputLeft.value;
+            textInputRight.value = goingToDoText;
+            this.saveText(timeKey, goingToDoText, 'what-i-did');
+            textInputRight.focus();
+        });
+        
+        // Right note: "What I Did"
+        const textInputRight = document.createElement('input');
+        textInputRight.type = 'text';
+        textInputRight.className = 'marker-text-input marker-text-right';
+        textInputRight.placeholder = 'What I Did';
+        textInputRight.value = this.getSavedText(timeKey, 'what-i-did');
+        
+        textInputRight.addEventListener('input', (e) => {
+            this.saveText(timeKey, e.target.value, 'what-i-did');
+        });
+        
+        notesContainer.appendChild(textInputLeft);
+        notesContainer.appendChild(transferButton);
+        notesContainer.appendChild(textInputRight);
+        
+        // Make marker clickable to focus first input
+        marker.style.cursor = 'pointer';
+        marker.addEventListener('click', (e) => {
+            if (e.target !== textInputLeft && e.target !== textInputRight) {
+                textInputLeft.focus();
+            }
+        });
+        
         marker.appendChild(timeText);
+        marker.appendChild(notesContainer);
         
         return marker;
+    }
+    
+    getTimeKey(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day}-${hours}-${minutes}`;
+    }
+    
+    getSavedText(timeKey, type) {
+        const saved = localStorage.getItem(`clock-text-${timeKey}-${type}`);
+        return saved || '';
+    }
+    
+    saveText(timeKey, text, type) {
+        if (text.trim()) {
+            localStorage.setItem(`clock-text-${timeKey}-${type}`, text);
+        } else {
+            localStorage.removeItem(`clock-text-${timeKey}-${type}`);
+        }
     }
     
     create5MinuteMarker(position) {

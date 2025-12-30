@@ -16,6 +16,9 @@ class VerticalClock {
         this.dateDisplayElement = document.getElementById('dateDisplay');
         this.timeDisplayElement = document.getElementById('timeDisplay');
         
+        this.animationFrame = null;
+        this.backupInterval = null;
+        
         this.init();
         this.updateDateDisplay();
         this.updateTimeDisplay();
@@ -345,6 +348,12 @@ class VerticalClock {
         this.lastMarkerUpdate = new Date();
         this.lastDateUpdate = new Date();
         this.animate();
+        
+        // Backup interval to keep position updated even when tab is hidden
+        // requestAnimationFrame pauses when tab is hidden, but setInterval continues
+        this.backupInterval = setInterval(() => {
+            this.updateTransform();
+        }, 100); // Update every 100ms to keep position synchronized
     }
 }
 
